@@ -13,7 +13,7 @@ describe Repository do
   end
 
   it 'retreives a specific repository' do
-    Repository.for(:users).should == user_repo
+    Repository.for(:users).should == user_repo.class
   end
 
   it 'runs setup on repositories when added' do

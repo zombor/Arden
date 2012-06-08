@@ -7,7 +7,7 @@ module Repository
   end
 
   def self.for(repo)
-    Repository.repositories[repo]
+    Repository.repositories[repo].class
   end
 
   protected
