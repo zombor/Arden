@@ -1,4 +1,4 @@
-require 'repository'
+require 'arden/repository'
 require 'data_mapper'
 
 module Arden
