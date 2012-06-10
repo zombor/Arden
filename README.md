@@ -10,14 +10,14 @@ It currently only has a DataMapper adapter.
 
 Create a repository:
 
-    require 'repository/datamapper'
+    require 'arden'
 
     class User
       attr_accessor :id, :email, :password
     end
 
     module Repository
-      class User < Repository::DataMapper
+      class User < Arden::Repository::DataMapper
 
         # data is a pre-built domain object (a generic user class)
         def self.create(data)
@@ -50,8 +50,8 @@ Create a repository:
 
 Add this repository:
 
-    Repository.add(:user => Repository::User.new)
+    Arden::Repository.add(:user => Repository::User.new)
 
 Use it:
 
-    user = Repository.for(:user).find_by_id(1)
+    user = Arden::Repository.for(:user).find_by_id(1)
