@@ -10,48 +10,54 @@ It currently only has a DataMapper adapter.
 
 Create a repository:
 
-    require 'arden'
+```ruby
+require 'arden'
+
+class User
+  attr_accessor :id, :email, :password
+end
+
+module Repository
+  class User < Arden::Repository::DataMapper
+
+    # data is a pre-built domain object (a generic user class)
+    def self.create(data)
+      user = User.new(:email => data.email, :password => data.password)
+      user.save
+    end
+
+    # returns a loaded domain object (a generic user class)
+    def self.find_by_id(id)
+      self.assign_user(User.get(id))
+    end
+
+    def self.assign_user(source)
+      user = new User
+      user.id = source.id
+      user.email = source.email
+      user.password = source.password
+      user
+    end
 
     class User
-      attr_accessor :id, :email, :password
+      include ::DataMapper::Resource
+
+      property :id,       Serial
+      property :email,    String
+      property :password, String
     end
-
-    module Repository
-      class User < Arden::Repository::DataMapper
-
-        # data is a pre-built domain object (a generic user class)
-        def self.create(data)
-          user = User.new(:email => data.email, :password => data.password)
-          user.save
-        end
-
-        # returns a loaded domain object (a generic user class)
-        def self.find_by_id(id)
-          self.assign_user(User.get(id))
-        end
-
-        def self.assign_user(source)
-          user = new User
-          user.id = source.id
-          user.email = source.email
-          user.password = source.password
-          user
-        end
-
-        class User
-          include ::DataMapper::Resource
-
-          property :id,       Serial
-          property :email,    String
-          property :password, String
-        end
-      end
-    end
+  end
+end
+```
 
 Add this repository:
 
-    Arden::Repository.add(:user => Repository::User.new)
+```ruby
+Arden::Repository.add(:user => Repository::User.new)
+```
 
 Use it:
 
-    user = Arden::Repository.for(:user).find_by_id(1)
+```ruby
+user = Arden::Repository.for(:user).find_by_id(1)
+```
